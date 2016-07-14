@@ -1,0 +1,23 @@
+{
+  "name": "lumen-blog",
+  "description": "blog of me",
+  "main": "index.js",
+  "authors": [
+    "Gerald Agustin"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "none"
+  ],
+  "homepage": "https://github.com/Cyproximity/lumen-blog",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "compass-mixins": "https://github.com/Igosuki/compass-mixins"
+  }
+}
