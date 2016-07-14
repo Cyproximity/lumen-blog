@@ -1,0 +1,38 @@
+{
+  "name": "lumen-blog",
+  "version": "1.0.0",
+  "description": "blog of me",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack",
+    "dev": "webpack-dev-server --port 8080 --progress --colors --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cyproximity/lumen-blog.git"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "Gerald Agustin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cyproximity/lumen-blog/issues"
+  },
+  "homepage": "https://github.com/Cyproximity/lumen-blog#readme",
+  "devDependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
+    "html-webpack-plugin": "^2.22.0",
+    "jade": "^1.11.0",
+    "jade-loader": "^0.8.0",
+    "node-sass": "^3.8.0",
+    "sass-loader": "^4.0.0",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-version-file-plugin": "^0.2.2"
+  }
+}
