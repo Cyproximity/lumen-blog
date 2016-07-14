@@ -1,2 +1,3 @@
 import './vendor';
-import './styles';
+import './stylesheets/styles';
+import './javascript/modules';
