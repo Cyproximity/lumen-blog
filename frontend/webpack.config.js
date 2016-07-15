@@ -10,17 +10,21 @@ module.exports = {
   entry: './src/app.js',
   output: {
     path: './build',
-    filename: 'bundle.[id]-[hash].js'
+    publicPath: '/',
+    filename: 'bundle.js'
   },
   module: {
     loaders: [
       { test: /\.js$/, exclude: /(node_modules|node_modules)/, loader: 'babel-loader' },
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      { test: /\.scss$/, loaders: ["style", "css", "sass"] },
       { test: /\.jade$/, loader: "jade" },
-      { test: /\.scss$/, loaders: ["style", "css", "sass"] }
     ]
   },
   resolve: {
-    modulesDirectories: ['bower_components', 'node_modules']
+    root: libPath,
+    extensions: ['', '.js'],
+    modulesDirectories: ['node_modules', 'bower_components', libPath]
   }, 
   plugins: [
     new HtmlWebpackPlugin({
