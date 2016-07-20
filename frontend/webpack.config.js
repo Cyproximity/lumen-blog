@@ -14,21 +14,24 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, exclude: /(node_modules|node_modules)/, loader: 'babel-loader' },
-      { test: /\.jade$/, loader: "jade" },
-      { test: /\.scss$/, loaders: ["style", "css", "sass"] }
+      { test: /\.js$/, exclude: /(node_modules|bower_components)/, loader: 'babel-loader', query: { presets: ['es2015'] } },
+      { test: /\.scss$/, loader: 'sass' },
+      { test: /\.jade$/, loader: 'jade' },
     ]
+  },
+  sassLoader: {
+    includePaths: [path.resolve(__dirname, './')]
   },
   resolve: {
     modulesDirectories: ['bower_components', 'node_modules']
   }, 
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       inject: true,
       template: path.join(libPath, 'index.html'),
       filename: 'index.html',
     }),
-    new webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin("style.css", {
       allChunks: true
     }),
