@@ -24,7 +24,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
       CopyWebpackPlugin = require('copy-webpack-plugin');
 
 //instances
-const ExtractCSS = new ExtractTextPlugin(path.resolve(srcPath, 'stylesheets/main.scss'));
+const ExtractCSS = new ExtractTextPlugin();
 
 const config = {
   entry: './src/app.js',
@@ -40,7 +40,7 @@ const config = {
     ]
   },
   sassLoader: {
-    includePaths: [ path.resolve(bowPath, 'compass-mixins/lib'), path.resolve(__dirname, './')]
+    includePaths: [ path.resolve(bowPath, 'compass-mixins/lib'), path.resolve(srcPath, 'stylesheets') ]
   },
   resolve: {
     modulesDirectories: ['bower_components', 'node_modules']
@@ -55,6 +55,7 @@ const config = {
       verbose: true,
       dry: false,
     }),
+    ExtractCSS,
     new HtmlWebpackPlugin({
       inject: true,
       template: path.join(srcPath, 'index.html'),
@@ -66,7 +67,6 @@ const config = {
         to: path.resolve(pubPath, 'images') 
       }
     ]),
-    ExtractCSS,
     new webpack.NoErrorsPlugin()
   ]
 };
@@ -78,6 +78,5 @@ if(TARGET === 'start') {
 if(TARGET === 'dev') {
   module.exports = merge(config, {})
 }
-
 
 /// TODO: ` Webpack copy plugin file to build folder
