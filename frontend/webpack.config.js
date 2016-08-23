@@ -1,5 +1,5 @@
 // node environment
-const TARGET = process.env.npm_lifecycle_event;
+const env = process.env.npm_lifecycle_event;
 
 const path = require('path'),
       webpack = require('webpack'),
@@ -10,12 +10,6 @@ const path = require('path'),
       bowPath = path.join(__dirname, 'bower_components'),
       nodPath = path.join(__dirname, 'node_modules');
 
-//3rd parties
-const precss = require('precss'),
-      autoprefixer = require('autoprefixer'),
-      postcss = function () {
-        return { default: [precss, autoprefixer]};
-      }; 
 
 //plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -23,60 +17,117 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
       ExtractTextPlugin = require('extract-text-webpack-plugin'),
       CopyWebpackPlugin = require('copy-webpack-plugin');
 
-//instances
-const ExtractCSS = new ExtractTextPlugin();
+//3rd parties
+const precss = require('precss'),
+      autoprefixer = require('autoprefixer'),
+      postcss = function () {
+        return { default: [precss, autoprefixer]};
+      };
 
 const config = {
   entry: './src/app.js',
   output: {
-    path: './build',
-    filename: 'bundle.[id]-[hash].js'
+    path: pubPath,
+    publicPath: '/',
+    filename: 'app.[id]-[hash].js'
+  },
+  resolve: {
+    extensions: ['', '.js'],
+    modulesDirectories: [ 'bower_components', 'node_modules', srcPath ]
   },
   module: {
     loaders: [
-      { test: /\.js$/, exclude: /(node_modules|bower_components)/, loader: 'babel-loader', query: { presets: ['es2015', 'stage-2'] } },
-      { test: /\.scss$/, loader: ExtractCSS.extract(['style','css!sass!postcss']) },
-      { test: /\.jade$/, loader: 'raw!html!jade' },
+      { test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader',
+        query: { presets: ['es2015', 'stage-2', 'react'] }
+      },
+      {
+        test: /\.jade$/,
+        loader: 'raw!html!jade!pug'
+      },
+      {
+        test: /\.css$/,
+        loader: 'style!css'
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract({
+          fallbackLoader: 'style-loader',
+          loader: ['style','css', 'sass', 'postcss']
+        })
+      },
+      {
+        test: /.*\.(gif|png|jpe?g|svg)$/i,
+        loaders: [
+          'file?hash=sha512&digest=hex&name=[hash].[ext]',
+          'image-webpack'
+        ]
+      }
     ]
   },
   sassLoader: {
-    includePaths: [ path.resolve(bowPath, 'compass-mixins/lib'), path.resolve(srcPath, 'stylesheets') ]
+    includePaths: [ bowPath, nodPath, path.resolve(srcPath, 'stylesheets') ]
   },
-  resolve: {
-    modulesDirectories: ['bower_components', 'node_modules']
-  }, 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.ResolverPlugin(
-      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(".bower.json", ["main"])
-    ),
     new CleanWebpackPlugin(['build'], {
       root: libPath,
       verbose: true,
       dry: false,
     }),
-    ExtractCSS,
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.ResolverPlugin(
+      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(".bower.json", ["main"])
+    ),
     new HtmlWebpackPlugin({
       inject: true,
       template: path.join(srcPath, 'index.html'),
       filename: 'index.html',
     }),
+    new ExtractTextPlugin({
+      filename: 'styles.[id]-[name].css',
+      allChunks: false
+    }),
     new CopyWebpackPlugin([
-      { 
-        from: path.resolve(srcPath, 'images'),
-        to: path.resolve(pubPath, 'images') 
-      }
+      { from: path.join(srcPath, 'images'), to: path.join(pubPath, 'images') }
     ]),
-    new webpack.NoErrorsPlugin()
+
   ]
 };
 
-if(TARGET === 'start') {
-  module.exports = merge(config);
+const devConfig = {
+  hot: true,
+  contentBase: pubPath,
+  outputPath: pubPath,
+  historyApiFallback: true,
+  proxy: {
+    '/api/*': {
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+      secure: false
+    }
+  },
 }
 
-if(TARGET === 'dev') {
-  module.exports = merge(config, {})
+// TODO: image-loader or image min
+
+if(env === 'start') {
+  module.exports = merge(config, {
+    plugins: [
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
+      })
+    ]
+  });
 }
 
-/// TODO: ` Webpack copy plugin file to build folder
+if(env === 'dev') {
+  module.exports = merge(config, {
+    devServer: devConfig,
+    plugins: [
+      new webpack.HotModuleReplacementPlugin()
+    ]
+  });
+}
