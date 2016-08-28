@@ -2,8 +2,8 @@
 
 var DEV_ENV = {
   host: '127.0.0.1',
-  port: 8080,
-  target: 'http://127.0.0.1:8080'
+  port: 3000,
+  api: 'http://127.0.0.1:8080'
 }
 
 // node environment
@@ -156,7 +156,7 @@ if(env === 'start'){
 }
 
 if(env === 'dev'){
-  module.exports = merge(config, Devserver(DEV_ENV.host, DEV_ENV.port, DEV_ENV.port));
+  module.exports = merge(config, Devserver(DEV_ENV.host, DEV_ENV.port, DEV_ENV.api));
 }
 
 if(env === 'build'){

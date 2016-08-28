@@ -2,6 +2,7 @@ console.log("React Modules");
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router, Route, Link } from 'react-router';
 
 import index from './components/index';
 
@@ -13,7 +14,7 @@ class Core extends React.Component {
     this.displayName = 'Core';
   }
   render() {
-    return <div>{this.displayName}</div>;
+    return <div class="core-container"></div>;
   }
 }
 
