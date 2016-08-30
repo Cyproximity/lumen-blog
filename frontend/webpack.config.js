@@ -26,7 +26,8 @@ var PATH_DIR = {
 var ExtractTextPlugin = require("extract-text-webpack-plugin"),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     CleanWebpackPlugin = require('clean-webpack-plugin'),
-    CopyWebpackPlugin = require('copy-webpack-plugin');
+    CopyWebpackPlugin = require('copy-webpack-plugin'),
+    OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 
 //default config
@@ -145,7 +146,8 @@ function Devserver(host, port, target) {
       new webpack.HotModuleReplacementPlugin(),
       new CopyWebpackPlugin([
         { from: path.resolve(PATH_DIR.src, 'images'), to: '/images' }
-      ])
+      ]),
+      new OpenBrowserPlugin({url: 'http://'+ host +':'+ port })
     ]
   }
 }
