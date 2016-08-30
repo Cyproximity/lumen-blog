@@ -2,7 +2,7 @@
 
 var DEV_ENV = {
   host: '127.0.0.1',
-  port: 8080,
+  port: 3000,
   target: 'http://127.0.0.1:8080'
 }
 
