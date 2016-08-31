@@ -1,20 +1,20 @@
 'use strict';
 
-var DEV_ENV = {
+const DEV_ENV = {
   host: '127.0.0.1',
   port: 3000,
   target: 'http://127.0.0.1:8080'
 }
 
 // node environment
-var env = process.env.npm_lifecycle_event,
+const env = process.env.npm_lifecycle_event,
     path = require('path'),
     webpack = require('webpack'),
     merge = require('webpack-merge'),
     autoprefixer = require('autoprefixer'),
     precss = require('precss');
 
-var PATH_DIR = {
+const PATH_DIR = {
   lib: path.join(__dirname),
   src: path.join(__dirname, 'src'),
   pub: path.join(__dirname, 'build'),
@@ -23,7 +23,7 @@ var PATH_DIR = {
 }
 
 //plugins
-var ExtractTextPlugin = require("extract-text-webpack-plugin"),
+const ExtractTextPlugin = require("extract-text-webpack-plugin"),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     CleanWebpackPlugin = require('clean-webpack-plugin'),
     CopyWebpackPlugin = require('copy-webpack-plugin'),
@@ -31,7 +31,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin"),
 
 
 //default config
-var config = {
+const config = {
   target: 'web',
   context: PATH_DIR.src,
   entry: {
