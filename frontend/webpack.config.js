@@ -158,7 +158,7 @@ if(env === 'start'){
 }
 
 if(env === 'dev'){
-  module.exports = merge(config, Devserver(DEV_ENV.host, DEV_ENV.port, DEV_ENV.port));
+  module.exports = merge(config, Devserver(DEV_ENV.host, DEV_ENV.port, DEV_ENV.target));
 }
 
 if(env === 'build'){
