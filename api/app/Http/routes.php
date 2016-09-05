@@ -10,4 +10,12 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-$app->get('/', ['uses' => 'UserController@me']);
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function($api){
+
+    $api->get('/', function() {
+        echo json_encode(['greet' => 'hello']);
+    });
+
+});

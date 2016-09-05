@@ -1,14 +1,23 @@
 <?php
 
-class TestCase extends Laravel\Lumen\Testing\TestCase
+use Lukasoppermann\Httpstatus\Httpstatuscodes;
+
+class TestCase extends Laravel\Lumen\Testing\TestCase implements Httpstatuscodes
 {
-    /**
-     * Creates the application.
-     *
-     * @return \Laravel\Lumen\Application
-     */
+    protected $client;
+
     public function createApplication()
     {
         return require __DIR__.'/../bootstrap/app.php';
+    }
+
+    public function setUp()
+    {
+      parent::setUp();
+
+      $this->client = new GGuzzleHttp\Client([
+        'base_uri' => 'http://',
+        'exceptions' => false
+      ]);
     }
 }
